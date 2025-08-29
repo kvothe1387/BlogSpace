@@ -64,6 +64,95 @@ body {
   font-weight: 300;
 }
 
+/* Form Styling */
+form {
+  background: rgba(255, 255, 255, .95);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, .1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, .2);
+  margin-bottom: 3rem;
+  transition: all .3s ease;
+}
+
+form:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .15);
+}
+
+/* Form Label Styling */
+form label {
+  display: block;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: .5rem;
+  margin-top: 1rem;
+  font-size: .9rem;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+form label:first-child {
+  margin-top: 0;
+}
+
+/* Form Input & Textarea Styling */
+form input[type="text"],
+form textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid rgba(102, 126, 234, .2);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  background: rgba(255, 255, 255, .8);
+  transition: all .3s ease;
+  /* For textarea */
+  resize: vertical;
+}
+
+form input[type="text"]:focus,
+form textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, .1);
+  transform: translateY(-1px);
+}
+
+/* Textarea Specific */
+form textarea {
+  height: clamp(120px, 15vh, 300px);
+}
+
+/* Button Styling */
+form button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  transition: all .3s ease;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, .3);
+  filter: brightness(1.05);
+}
+
+form button:active {
+  transform: translateY(0);
+}
+
 /* Blog Posts */
 #blog-list {
   display: flex;
@@ -100,4 +189,32 @@ body {
   font-size: 1rem;
   line-height: 1.7;
   font-weight: 400;
+}
+
+.post-number {
+  display: inline-block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .3rem .8rem;
+  border-radius: 20px;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  form {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  form input[type="text"],
+  form textarea {
+    padding: .8rem;
+  }
+
+  form button {
+    width: 100%;
+    padding: 1rem;
+  }
 }
