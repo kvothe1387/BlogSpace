@@ -1,29 +1,63 @@
-fetch('https://apis.scrimba.com/jsonplaceholder/posts')
-  .then(response => response.json())
-  .then(data => {
-    // limit to first 5 items
-    const postArr = data.slice(0, 5)
-    let html = ""
+let posts = []
 
-    for (let i = 0; i < postArr.length; i++) {
-      const post = postArr[i]
-      html += `
-        <article class="post">
-          <span class="post-number">Post #${i + 1}</span>
+// Function To Render a Single Post or Array of Posts 
+function renderPosts(postData, prepend = false) {
+  // Handle Both Single Post & Array of Posts
+  const postsToRender = Array.isArray(postData) ? postData : [postData]
+
+  let html = ""
+  postsToRender.forEach((post, index) => {
+    // For initial load, use sequential numbering
+    // For new posts, use "New Post" label
+    const postLabel = prepend ? "New Post" : `Post #${posts.length - postsToRender.length + index + 1}`
+
+    html += `
+      <article class="post">
+          <span class="post-number">${postLabel}</span>
           <h3>${post.title}</h3>
           <p>${post.body}</p>
         </article>
-      `
-    }
-    document.getElementById('blog-list').innerHTML = html
+    `;
   })
 
+  const blogList = document.getElementById('blog-list')
+
+  if (prepend) {
+    // Add New Post To The Beginning
+    blogList.insertAdjacentHTML("afterbegin", html)
+  } else {
+    // Replace All Content (for intital load)
+    blogList.innerHTML = html
+  }
+}
+
+// Initial Fetch & Render
+fetch('https://apis.scrimba.com/jsonplaceholder/posts')
+  .then(response => response.json())
+  .then(data => {
+    // Store First 5 Items & Render Them
+    posts = data.slice(0, 5)
+    renderPosts(posts)
+  })
+  .catch(error => {
+    console.error('Error fetching posts:', error)
+    document.getElementById('blog-list').innerHTML = '<p>Error loading posts. Please try again later.</p>'
+  })
+
+// Form Submission Handler 
 document.getElementById("new-post").addEventListener("submit", function (e) {
   e.preventDefault()
-  // get the values from the form inputs
+  // Get Form Values
   const postTitle = document.getElementById('post-title').value
   const postBody = document.getElementById('post-body').value
-  // create an object with title & body properties
+
+  // Validate Inputs
+  if (!postTitle.trim() || !postBody.trim()) {
+    alert('Please fill in both title and body fields.')
+    return;
+  }
+
+  // Create New Post Object
   const newPost = {
     title: postTitle,
     body: postBody
@@ -39,16 +73,18 @@ document.getElementById("new-post").addEventListener("submit", function (e) {
   fetch("https://apis.scrimba.com/jsonplaceholder/posts", options)
     .then(respone => respone.json())
     .then(data => {
-      // Insert new post at the top of the blog list
-      document.getElementById('blog-list').insertAdjacentHTML("afterbegin", `
-        <article class="post">
-          <span class="post-number">New Post</span>
-          <h3>${data.title}</h3>
-          <p>${data.body}</p>
-        </article>
-      `)
-    })
+      // Add To Posts Array & Render
+      posts.unshift(data) // Add To Beginning Of Array
+      renderPosts(data, true) // Render Single Post, Prepended
 
+      // Clear Form
+      document.getElementById('post-title').value = ''
+      document.getElementById('post-body').value = ''
+    })
+    .catch(error => {
+      console.error('Error Ceating Post:', error)
+      alert('Failed To Create Post, Please Try Again')
+    })
 })
 
 
