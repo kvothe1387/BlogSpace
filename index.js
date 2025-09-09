@@ -1,4 +1,6 @@
 let posts = []
+const titleInput = document.getElementById('post-title')
+const bodyInput = document.getElementById('post-body')
 
 // Function To Render a Single Post or Array of Posts 
 function renderPosts(postData, prepend = false) {
@@ -48,8 +50,8 @@ fetch('https://apis.scrimba.com/jsonplaceholder/posts')
 document.getElementById("new-post").addEventListener("submit", function (e) {
   e.preventDefault()
   // Get Form Values
-  const postTitle = document.getElementById('post-title').value
-  const postBody = document.getElementById('post-body').value
+  const postTitle = titleInput.value
+  const postBody = bodyInput.value
 
   // Validate Inputs
   if (!postTitle.trim() || !postBody.trim()) {
@@ -77,9 +79,9 @@ document.getElementById("new-post").addEventListener("submit", function (e) {
       posts.unshift(data) // Add To Beginning Of Array
       renderPosts(data, true) // Render Single Post, Prepended
 
-      // Clear Form
-      document.getElementById('post-title').value = ''
-      document.getElementById('post-body').value = ''
+      // Clear The Form Out
+      titleInput.value = ''
+      bodyInput.value = ''
     })
     .catch(error => {
       console.error('Error Ceating Post:', error)
